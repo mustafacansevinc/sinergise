@@ -6,7 +6,7 @@ import com.sinergise.geometry.LineString;
 import com.sinergise.geometry.Point;
 
 public class WKTWriter {
-	
+
 	/**
 	 * Transforms the input Geometry object into WKT-formatted String. e.g.
 	 * <pre><code>
@@ -16,7 +16,14 @@ public class WKTWriter {
 	 */
 	public String write(Geometry geom) {
 		//TODO: Implement this
-		//
-		return write(new GeometryCollection<Geometry>(new Geometry[]{new Point(4,6), new LineString(new double[] {4,6,7,10})}));
+		String output = "";
+		output += geom.getClass().getSimpleName();
+		System.out.println(output);
+		return output;
+		//return write(new GeometryCollection<Geometry>(new Geometry[]{new Point(4,6), new LineString(new double[] {4,6,7,10})}));
+	}
+
+	public static void main(String[] args){
+		new WKTWriter().write(new LineString(new double[]{30, 10, 10, 30, 40, 40}));
 	}
 }

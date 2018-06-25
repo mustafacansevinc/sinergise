@@ -12,6 +12,7 @@ public class WKTReader {
 	 */
 	public Geometry read(String wktString) {
 		//TODO: Implement this
+		return null;
 	}
 
 }
