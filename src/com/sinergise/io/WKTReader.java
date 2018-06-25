@@ -4,7 +4,6 @@ import com.sinergise.geometry.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,6 +29,18 @@ public class WKTReader {
 
         else if (wktString.startsWith("MULTIPOINT")) {
             return readMultiPoint(wktString);
+        }
+
+        else if (wktString.startsWith("MULTILINESTRING")) {
+            return readMultiLineString(wktString);
+        }
+
+        else if (wktString.startsWith("MULTIPOLYGON")) {
+            return readMultiPolygon(wktString);
+        }
+
+        else if (wktString.startsWith("GEOMETRYCOLLECTION")) {
+            return readGeometryCollection(wktString);
         }
 
         return null;
@@ -152,6 +163,26 @@ public class WKTReader {
         return mpol;
     }
 
+    private GeometryCollection<Geometry> readGeometryCollection(String wktString){
+        Pattern regex = Pattern.compile("(\\w+\\s+(\\([\\d.d\\s,]+\\)))"); //check regex
+        Matcher m = regex.matcher(wktString);
+        List <Geometry> gc = new ArrayList<Geometry>();
+
+        while (m.find()) {
+            gc.add(read(m.group()));
+        }
+
+        Geometry elements[] = new Geometry[gc.size()];
+        int i = 0;
+        for (Geometry geometry : gc) {
+            elements[i] = geometry;
+            i++;
+        }
+        GeometryCollection gcol = new GeometryCollection(elements);
+        System.out.println(gcol.toString());
+        return gcol;
+    }
+
     public static void main(String[] args){
         WKTReader wkt = new WKTReader();
         wkt.read("POINT (3.5 4)");
@@ -161,6 +192,7 @@ public class WKTReader {
         wkt.read("POLYGON ((35 10, 45 45, 15 40, 10 20, 35 10), (20 30, 35 35, 30 20, 20 30))");
         wkt.read("MULTIPOINT ((4 6), (5 10))");
         wkt.readMultiPolygon("MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)), ((20 35, 10 30, 10 10, 30 5, 45 20, 20 35), (30 20, 20 15, 20 25, 30 20)))");
+        wkt.readGeometryCollection("GEOMETRYCOLLECTION (POINT (4 6), LINESTRING (4 6, 7 10))");
     }
 }
 
