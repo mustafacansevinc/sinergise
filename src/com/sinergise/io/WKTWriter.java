@@ -17,7 +17,26 @@ public class WKTWriter {
 	public String write(Geometry geom) {
 		//TODO: Implement this
 		String output = "";
-		output += geom.getClass().getSimpleName();
+		Class geom_class = geom.getClass();
+		output += geom_class.getSimpleName();
+
+		if (geom_class == Point.class) {
+			Point p = (Point) geom;
+			output += "(" + p.getX() + " " + p.getY() + ")";
+		}
+
+		else if (geom_class == LineString.class) {
+			LineString ls = (LineString)geom;
+			output += "(";
+			for (int i = 0; i < ls.getNumCoords(); i++) {
+				output += ls.getX(i) + " " + ls.getY(i);
+				if (i != ls.getNumCoords() - 1)
+					output += ", ";
+			}
+			output += ")";
+		}
+
+
 		System.out.println(output);
 		return output;
 		//return write(new GeometryCollection<Geometry>(new Geometry[]{new Point(4,6), new LineString(new double[] {4,6,7,10})}));
