@@ -15,6 +15,7 @@ public class WKTReader {
      */
     public Geometry read(String wktString) {
         //TODO: Implement this
+        //TODO: Check RegEx of readers.
         if (wktString.startsWith("POINT")){
             return readPoint(wktString);
         }
@@ -25,6 +26,10 @@ public class WKTReader {
 
         else if (wktString.startsWith("POLYGON")) {
             return readPolygon(wktString);
+        }
+
+        else if (wktString.startsWith("MULTIPOINT")) {
+            return readMultiPoint(wktString);
         }
 
         return null;
@@ -87,6 +92,48 @@ public class WKTReader {
         return pol;
     }
 
+    private MultiPoint readMultiPoint(String wktString){
+        Pattern regex = Pattern.compile("([\\d.d]+)\\s([\\d.d]+)");
+        Matcher m = regex.matcher(wktString);
+        List<Point> p = new ArrayList<Point>();
+
+        while (m.find()) {
+            p.add(readPoint(m.group()));
+        }
+
+        Point points[] = new Point[p.size()];
+        int i = 0;
+        for (Point point : p) {
+            points[i] = point;
+            i++;
+        }
+        MultiPoint mp = new MultiPoint(points);
+        System.out.println(mp.toString());
+        return mp;
+    }
+
+    private MultiLineString readMultiLineString(String wktString){
+        Pattern regex = Pattern.compile("(\\([\\d.d\\s,]+\\))");    //check regex
+        Matcher m = regex.matcher(wktString);
+        List<LineString> ls = new ArrayList<LineString>();
+
+        while (m.find()) {
+            ls.add(readLineString(m.group()));
+        }
+
+        LineString lineStrings[] = new LineString[ls.size()];
+        int i = 0;
+        for (LineString linestring : ls) {
+            lineStrings[i] = linestring;
+            i++;
+        }
+        MultiLineString mls = new MultiLineString(lineStrings);
+        System.out.println(mls.toString());
+        return mls;
+    }
+
+
+
     public static void main(String[] args){
         WKTReader wkt = new WKTReader();
         wkt.read("POINT (3.5 4)");
@@ -94,6 +141,7 @@ public class WKTReader {
         wkt.read("LINESTRING (30 10, 10 30, 40 40)");
         wkt.read("LINESTRING (30.4 10, 10 30.2, 40.5 40)");
         wkt.read("POLYGON ((35 10, 45 45, 15 40, 10 20, 35 10), (20 30, 35 35, 30 20, 20 30))");
+        wkt.read("MULTIPOINT ((4 6), (5 10))");
     }
 }
 
