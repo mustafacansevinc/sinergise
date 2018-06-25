@@ -67,15 +67,24 @@ public class WKTReader {
     }
 
     private Polygon readPolygon(String wktString){
-        Pattern regex = Pattern.compile("([\\d.d]+)\\s([\\d.d]+)");
+        Pattern regex = Pattern.compile("(\\([\\d.d\\s,]+\\))");
         Matcher m = regex.matcher(wktString);
         List<LineString> ls = new ArrayList<LineString>();
 
         while (m.find()) {
             ls.add(readLineString(m.group()));
         }
-        System.out.println(ls);
-        return null;
+
+        LineString outer = ls.remove(0);
+        LineString[] holes = new LineString[ls.size()];
+        int i = 0;
+        for (LineString l : ls) {
+            holes[i] = l;
+            i++;
+        }
+        Polygon pol = new Polygon(outer,holes);
+        System.out.println(pol.toString());
+        return pol;
     }
 
     public static void main(String[] args){
