@@ -21,7 +21,7 @@ public class WKTWriter {
 		//TODO: Implement this
 		String output = "";
 		Class geom_class = geom.getClass();
-		output += geom_class.getSimpleName().toUpperCase();
+		output += geom_class.getSimpleName().toUpperCase() + " ";
 
 		if (geom_class == Point.class) {
 			Point p = (Point) geom;
@@ -35,6 +35,17 @@ public class WKTWriter {
 				output += ls.getX(i) + " " + ls.getY(i);
 				if (i != ls.getNumCoords() - 1)
 					output += ", ";
+			}
+			output += ")";
+		}
+
+		else if (geom_class == Polygon.class)
+		{
+			Polygon pol = (Polygon) geom;
+			// couldnt find clear info about expected output here. So just imitating wikipedia example.
+			output += "(" + write(pol.getOuter());
+			for (int i = 0; i < pol.getNumHoles(); i++) {
+				output += ", " + write(pol.getHole(i));
 			}
 			output += ")";
 		}
@@ -68,5 +79,7 @@ public class WKTWriter {
 		System.out.println(new WKTWriter().write(new LineString(new double[]{30, 10, 10, 30, 40, 40})));
 		System.out.println(new WKTWriter().write(new MultiPoint(new Point[]{new Point(4, 6), new Point(5, 10)})));
 		System.out.println(new WKTWriter().write(new GeometryCollection<Geometry>(new Geometry[]{new Point(4,6), new LineString(new double[] {4,6,7,10})})));
+		System.out.println(new WKTWriter().write(new Polygon(new LineString(new double[] {35, 10, 45, 45, 15, 40, 10, 20, 35, 10}), new LineString[]{new LineString(new double[]{20, 30, 35, 35, 30, 20, 20, 30})})));
+
 	}
 }
