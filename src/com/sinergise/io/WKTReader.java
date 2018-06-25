@@ -160,6 +160,7 @@ public class WKTReader {
         wkt.read("LINESTRING (30.4 10, 10 30.2, 40.5 40)");
         wkt.read("POLYGON ((35 10, 45 45, 15 40, 10 20, 35 10), (20 30, 35 35, 30 20, 20 30))");
         wkt.read("MULTIPOINT ((4 6), (5 10))");
+        wkt.readMultiPolygon("MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)), ((20 35, 10 30, 10 10, 30 5, 45 20, 20 35), (30 20, 20 15, 20 25, 30 20)))");
     }
 }
 
