@@ -16,6 +16,7 @@ public class WKTWriter {
 	 */
 	public String write(Geometry geom) {
 		//TODO: Implement this
+		//
 		return write(new GeometryCollection<Geometry>(new Geometry[]{new Point(4,6), new LineString(new double[] {4,6,7,10})}));
 	}
 }
