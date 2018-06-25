@@ -4,6 +4,9 @@ import com.sinergise.geometry.Geometry;
 import com.sinergise.geometry.GeometryCollection;
 import com.sinergise.geometry.LineString;
 import com.sinergise.geometry.Point;
+import com.sinergise.geometry.MultiPoint;
+import com.sinergise.geometry.MultiLineString;
+import com.sinergise.geometry.Polygon;
 
 public class WKTWriter {
 
@@ -36,13 +39,25 @@ public class WKTWriter {
 			output += ")";
 		}
 
+		else if (geom_class == MultiPoint.class) {
+			MultiPoint mp = (MultiPoint) geom;
+			output += "(";
+			for (int i=0; i<mp.size(); i++) {
+				output += write(mp.get(i));
+				if (i != mp.size() - 1)
+					output += ", ";
+			}
+			output += ")";
+		}
 
-		System.out.println(output);
+
+		//System.out.println(output);
 		return output;
 		//return write(new GeometryCollection<Geometry>(new Geometry[]{new Point(4,6), new LineString(new double[] {4,6,7,10})}));
 	}
 
 	public static void main(String[] args){
-		new WKTWriter().write(new LineString(new double[]{30, 10, 10, 30, 40, 40}));
+		System.out.println(new WKTWriter().write(new LineString(new double[]{30, 10, 10, 30, 40, 40})));
+		System.out.println(new WKTWriter().write(new MultiPoint(new Point[]{new Point(4, 6), new Point(5, 10)})));
 	}
 }
