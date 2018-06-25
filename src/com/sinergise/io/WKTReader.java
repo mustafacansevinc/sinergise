@@ -47,8 +47,17 @@ public class WKTReader {
                 coords[i] = p;
                 i++;
             }
+
             System.out.println(new LineString(coords).toString());
             return new LineString(coords);
+        }
+
+        else if (wktString.startsWith("POLYGON")) {
+            Pattern regex = Pattern.compile("([\\d.d]+)\\s([\\d.d]+)");
+            Matcher m = regex.matcher(wktString);
+            List<LineString> ls = new ArrayList<LineString>();
+
+            //TODO: work on recursive function for proper read
         }
 
         return null;
@@ -60,6 +69,7 @@ public class WKTReader {
         wkt.read("LINESTRING EMPTY");
         wkt.read("LINESTRING (30 10, 10 30, 40 40)");
         wkt.read("LINESTRING (30.4 10, 10 30.2, 40.5 40)");
+        wkt.read("POLYGON ((35 10, 45 45, 15 40, 10 20, 35 10), (20 30, 35 35, 30 20, 20 30))");
     }
 }
 
