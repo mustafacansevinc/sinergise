@@ -17,6 +17,9 @@ public class WKTWriter {
 
     public String write(Geometry geom) {
         //TODO: Implement this
+        //TODO: Use instanceof
+        //TODO: Add fashion
+        //TODO: Add comments
         String output = writeFormatted(geom, false); //using isSubElement to get a proper output
         return output;
     }

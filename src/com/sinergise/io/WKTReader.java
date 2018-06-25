@@ -15,6 +15,9 @@ public class WKTReader {
     public Geometry read(String wktString) {
         //TODO: Implement this
         //TODO: Check RegEx of readers.
+        //TODO: Check EMPTY objects
+        //TODO: Add fashion
+        //TODO: Add comments
         if (wktString.startsWith("POINT")){
             return readPoint(wktString);
         }
@@ -57,7 +60,7 @@ public class WKTReader {
         } else {
             p = new Point();
         }
-        System.out.println(p.toString());
+        System.out.println(new WKTWriter().write(p));
         return p;
     }
 
@@ -77,9 +80,9 @@ public class WKTReader {
             coords[i] = p;
             i++;
         }
-
-        System.out.println(new LineString(coords).toString());
-        return new LineString(coords);
+        LineString ls = new LineString(coords);
+        System.out.println(new WKTWriter().write(ls));
+        return ls;
     }
 
     private Polygon readPolygon(String wktString){
@@ -99,7 +102,7 @@ public class WKTReader {
             i++;
         }
         Polygon pol = new Polygon(outer,holes);
-        System.out.println(pol.toString());
+        System.out.println(new WKTWriter().write(pol));
         return pol;
     }
 
@@ -119,7 +122,7 @@ public class WKTReader {
             i++;
         }
         MultiPoint mp = new MultiPoint(points);
-        System.out.println(mp.toString());
+        System.out.println(new WKTWriter().write(mp));
         return mp;
     }
 
@@ -139,7 +142,7 @@ public class WKTReader {
             i++;
         }
         MultiLineString mls = new MultiLineString(lineStrings);
-        System.out.println(mls.toString());
+        System.out.println(new WKTWriter().write(mls));
         return mls;
     }
 
@@ -159,7 +162,7 @@ public class WKTReader {
             i++;
         }
         MultiPolygon mpol = new MultiPolygon(polys);
-        System.out.println(mpol.toString());
+        System.out.println(new WKTWriter().write(mpol));
         return mpol;
     }
 
@@ -179,7 +182,7 @@ public class WKTReader {
             i++;
         }
         GeometryCollection gcol = new GeometryCollection(elements);
-        System.out.println(gcol.toString());
+        System.out.println(new WKTWriter().write(gcol));
         return gcol;
     }
 
