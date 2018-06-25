@@ -132,7 +132,25 @@ public class WKTReader {
         return mls;
     }
 
+    private MultiPolygon readMultiPolygon(String wktString){
+        Pattern regex = Pattern.compile("(\\([\\d.d\\s,]+\\))"); //check regex
+        Matcher m = regex.matcher(wktString);
+        List<Polygon> pol = new ArrayList<Polygon>();
 
+        while (m.find()) {
+            pol.add(readPolygon(m.group()));
+        }
+
+        Polygon polys[] = new Polygon[pol.size()];
+        int i = 0;
+        for (Polygon polygon : pol) {
+            polys[i] = polygon;
+            i++;
+        }
+        MultiPolygon mpol = new MultiPolygon(polys);
+        System.out.println(mpol.toString());
+        return mpol;
+    }
 
     public static void main(String[] args){
         WKTReader wkt = new WKTReader();
