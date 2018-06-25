@@ -21,7 +21,7 @@ public class WKTWriter {
 		//TODO: Implement this
 		String output = "";
 		Class geom_class = geom.getClass();
-		output += geom_class.getSimpleName();
+		output += geom_class.getSimpleName().toUpperCase();
 
 		if (geom_class == Point.class) {
 			Point p = (Point) geom;
@@ -50,14 +50,23 @@ public class WKTWriter {
 			output += ")";
 		}
 
+		else if (geom_class == GeometryCollection.class) {
+			GeometryCollection gc = (GeometryCollection) geom;
+			output += "(";
+			for (int i=0; i<gc.size(); i++) {
+				output += write(gc.get(i));
+				if (i != gc.size() - 1)
+					output += ", ";
+			}
+			output += ")";
+		}
 
-		//System.out.println(output);
 		return output;
-		//return write(new GeometryCollection<Geometry>(new Geometry[]{new Point(4,6), new LineString(new double[] {4,6,7,10})}));
 	}
 
 	public static void main(String[] args){
 		System.out.println(new WKTWriter().write(new LineString(new double[]{30, 10, 10, 30, 40, 40})));
 		System.out.println(new WKTWriter().write(new MultiPoint(new Point[]{new Point(4, 6), new Point(5, 10)})));
+		System.out.println(new WKTWriter().write(new GeometryCollection<Geometry>(new Geometry[]{new Point(4,6), new LineString(new double[] {4,6,7,10})})));
 	}
 }
