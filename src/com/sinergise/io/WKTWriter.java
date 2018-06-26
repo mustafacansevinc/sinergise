@@ -25,10 +25,10 @@ public class WKTWriter {
     public String writeFormatted(Geometry geom, boolean isSubElement){
         String wktString = "";
         if (!isSubElement){ //dont write classnames if subElement
-            wktString += geom.getClass().getSimpleName().toUpperCase(Locale.ENGLISH) + " "; //to get exactly "LINESTRING"
+            wktString = geom.getClass().getSimpleName().toUpperCase(Locale.ENGLISH) + " "; //to get exactly "LINESTRING"
         }
         if (geom.isEmpty()){
-            wktString += "EMPTY";
+            wktString = geom.getClass().getSimpleName().toUpperCase(Locale.ENGLISH) + " EMPTY";
         }
         else if (geom instanceof Point) {
             wktString += writePoint((Point) geom);
@@ -139,6 +139,7 @@ public class WKTWriter {
 
     public static void main(String[] args){
         WKTWriter wkt = new WKTWriter();
+        System.out.println(wkt.write(new MultiPoint(new Point[]{new Point(3,5), new Point(), new Point(4,6)})));
         System.out.println(wkt.write(new Point(3,4)));
         System.out.println(wkt.write(new LineString(new double[]{30, 10, 10, 30, 40, 40})));
         System.out.println(wkt.write(new LineString()));
@@ -147,5 +148,6 @@ public class WKTWriter {
         System.out.println(wkt.write(new Polygon(new LineString(new double[] {35, 10, 45, 45, 15, 40, 10, 20, 35, 10}), new LineString[]{new LineString(new double[]{20, 30, 35, 35, 30, 20, 20, 30})})));
         System.out.println(wkt.write(new MultiLineString(new LineString[]{new LineString(new double[]{30, 10, 10, 30, 40, 40}), new LineString(new double[] {35, 10, 45, 45, 15, 40, 10, 20, 35, 10}), new LineString(new double[]{20, 30, 35, 35, 30, 20, 20, 30}) })));
         System.out.println(wkt.write(new MultiPolygon(new Polygon[]{(new Polygon(new LineString(new double[]{40, 40, 20, 45, 45, 30, 40, 40}), new LineString[]{})),(new Polygon(new LineString(new double[]{20, 35, 10, 30, 10, 10, 30, 5, 45, 20, 20, 35}), new LineString[]{new LineString(new double[]{30, 20, 20, 15, 20, 25, 30, 20})})) })));
+
     }
 }

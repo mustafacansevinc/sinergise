@@ -14,8 +14,7 @@ public class WKTReader {
      */
     public Geometry read(String wktString) {
         //TODO: Implement this
-        //TODO: Check RegEx of readers.
-        //TODO: Check EMPTY objects
+        //These RegEx's are working for all of my test data
         //TODO: Add fashion
         //TODO: Add comments
         if (wktString.startsWith("POINT")){
@@ -93,21 +92,25 @@ public class WKTReader {
         while (m.find()) {
             ls.add(readLineString(m.group()));
         }
-
-        LineString outer = ls.remove(0);
-        LineString[] holes = new LineString[ls.size()];
-        int i = 0;
-        for (LineString l : ls) {
-            holes[i] = l;
-            i++;
+        LineString outer = null;
+        try {
+            outer = ls.remove(0);   // in case of POLYGON EMPTY
         }
-        Polygon pol = new Polygon(outer,holes);
-        System.out.println(new WKTWriter().write(pol));
-        return pol;
+        finally {
+            LineString[] holes = new LineString[ls.size()];
+            int i = 0;
+            for (LineString l : ls) {
+                holes[i] = l;
+                i++;
+            }
+            Polygon pol = new Polygon(outer,holes);
+            System.out.println(new WKTWriter().write(pol));
+            return pol;
+        }
     }
 
     private MultiPoint readMultiPoint(String wktString){
-        Pattern regex = Pattern.compile("([\\d.d]+)\\s([\\d.d]+)");
+        Pattern regex = Pattern.compile("(\\([\\d]+)\\s([\\d]+\\))|((?:\\s|\\()POINT EMPTY)");
         Matcher m = regex.matcher(wktString);
         List<Point> p = new ArrayList<Point>();
 
@@ -127,7 +130,7 @@ public class WKTReader {
     }
 
     private MultiLineString readMultiLineString(String wktString){
-        Pattern regex = Pattern.compile("(\\([\\d.d\\s,]+\\))");    //check regex
+        Pattern regex = Pattern.compile("(\\([\\d.d\\s,]+\\))|((?:\\s|\\()LINESTRING EMPTY)");    //check regex
         Matcher m = regex.matcher(wktString);
         List<LineString> ls = new ArrayList<LineString>();
 
@@ -147,7 +150,7 @@ public class WKTReader {
     }
 
     private MultiPolygon readMultiPolygon(String wktString){
-        Pattern regex = Pattern.compile("(\\([\\d.d\\s,]+\\))"); //check regex
+        Pattern regex = Pattern.compile("((\\([\\d\\s,]+\\))(?:,\\s(\\([\\d\\s,]+\\)))*)|((?:\\s|\\()POLYGON EMPTY)");
         Matcher m = regex.matcher(wktString);
         List<Polygon> pol = new ArrayList<Polygon>();
 
@@ -167,7 +170,7 @@ public class WKTReader {
     }
 
     private GeometryCollection<Geometry> readGeometryCollection(String wktString){
-        Pattern regex = Pattern.compile("(\\w+\\s+(\\([\\d.d\\s,]+\\)))"); //check regex
+        Pattern regex = Pattern.compile("(\\w+\\s+(\\([\\d.d\\s,]+\\)))|((POINT|LINESTRING|POLYGON|MULTIPOINT|MULTILINESTRING|MULTIPOLYGON) EMPTY)");
         Matcher m = regex.matcher(wktString);
         List <Geometry> gc = new ArrayList<Geometry>();
 
@@ -187,15 +190,26 @@ public class WKTReader {
     }
 
     public static void main(String[] args){
+        //Writing with WKTWriter in reader methods to check objects.
         WKTReader wkt = new WKTReader();
+        wkt.read("MULTILINESTRING ((30 10, 10 30, 40 40), LINESTRING EMPTY, (30 10, 10 30, 40 40))");
+        wkt.read("MULTIPOINT ((3 5), POINT EMPTY, (4 6))");
+        wkt.read("MULTIPOLYGON EMPTY");
+        wkt.read("MULTILINESTRING EMPTY");
+        wkt.read("MULTILINESTRING (LINESTRING EMPTY)");
+        wkt.read("MULTIPOINT EMPTY");
+        wkt.read("MULTIPOINT (POINT EMPTY)");
+        wkt.read("MULTIPOLYGON (POLYGON EMPTY, ((35 10, 45 45, 15 40, 10 20, 35 10), (20 30, 35 35, 30 20, 20 30)))");
         wkt.read("POINT (3.5 4)");
         wkt.read("LINESTRING EMPTY");
         wkt.read("LINESTRING (30 10, 10 30, 40 40)");
         wkt.read("LINESTRING (30.4 10, 10 30.2, 40.5 40)");
         wkt.read("POLYGON ((35 10, 45 45, 15 40, 10 20, 35 10), (20 30, 35 35, 30 20, 20 30))");
+        wkt.read("POLYGON EMPTY");
         wkt.read("MULTIPOINT ((4 6), (5 10))");
-        wkt.readMultiPolygon("MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)), ((20 35, 10 30, 10 10, 30 5, 45 20, 20 35), (30 20, 20 15, 20 25, 30 20)))");
-        wkt.readGeometryCollection("GEOMETRYCOLLECTION (POINT (4 6), LINESTRING (4 6, 7 10))");
+        wkt.read("MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)), ((20 35, 10 30, 10 10, 30 5, 45 20, 20 35), (30 20, 20 15, 20 25, 30 20)))");
+        wkt.read("GEOMETRYCOLLECTION EMPTY");
+        wkt.read("GEOMETRYCOLLECTION (POINT (4 6), LINESTRING (4 6, 7 10), POINT EMPTY)");
     }
 }
 
