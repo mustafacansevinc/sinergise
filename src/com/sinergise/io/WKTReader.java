@@ -15,7 +15,6 @@ public class WKTReader {
     public Geometry read(String wktString) {
         //TODO: Implement this
         //These RegEx's are working for all of my test data
-        //TODO: Add fashion
         //TODO: Add comments
         if (wktString.startsWith("POINT")){
             return readPoint(wktString);

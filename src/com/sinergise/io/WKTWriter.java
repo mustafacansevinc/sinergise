@@ -17,7 +17,6 @@ public class WKTWriter {
 
     public String write(Geometry geom) {
         //TODO: Implement this
-        //TODO: Add fashion
         //TODO: Add comments
         return writeFormatted(geom, false); //using isSubElement to get a proper wktString
     }
