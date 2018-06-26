@@ -20,11 +20,89 @@ public class WKTWriter {
         //TODO: Use instanceof
         //TODO: Add fashion
         //TODO: Add comments
-        String output = writeFormatted(geom, false); //using isSubElement to get a proper output
-        return output;
+        String wktString = writeFormatted(geom, false); //using isSubElement to get a proper wktString
+        return wktString;
     }
 
-    private String decimalformat(double d){ //formatting doubles to get a proper output
+    private String writePoint(Geometry geom) {
+        Point p = (Point) geom;
+        return "(" + decimalformat(p.getX()) + " " + decimalformat(p.getY()) + ")";
+    }
+
+    private String writeLineString(Geometry geom){
+        LineString ls = (LineString)geom;
+        String wktString = "(";
+        for (int i = 0; i < ls.getNumCoords(); i++) {
+            wktString += decimalformat(ls.getX(i)) + " " + decimalformat(ls.getY(i));
+            if (i != ls.getNumCoords() - 1)
+                wktString += ", ";
+        }
+        wktString += ")";
+        return wktString;
+    }
+
+    private String writePolygon(Geometry geom) {
+        Polygon pol = (Polygon) geom;
+        // couldnt find clear info about expected wktString here. So just imitating wikipedia example.
+        String wktString = "(" + writeFormatted(pol.getOuter(),true);
+        for (int i = 0; i < pol.getNumHoles(); i++) {
+            wktString += ", " + writeFormatted(pol.getHole(i), true);
+        }
+        wktString += ")";
+        return wktString;
+    }
+
+    private String writeMultiPoint(Geometry geom) {
+        MultiPoint mp = (MultiPoint) geom;
+        String wktString = "(";
+        for (int i=0; i<mp.size(); i++) {
+            wktString += writeFormatted(mp.get(i), true);
+            if (i != mp.size() - 1)
+                wktString += ", ";
+        }
+        wktString += ")";
+        return wktString;
+    }
+
+    private String writeMultiLineString(Geometry geom){
+
+        MultiLineString mls = (MultiLineString)geom;
+        String wktString = "(";
+        for (int i = 0; i<mls.size(); i++) {
+            wktString +=  writeFormatted(mls.get(i), true);
+            if (i != mls.size() - 1)
+                wktString += ", ";
+        }
+        wktString += ")";
+        return wktString;
+    }
+
+    private String writeMultiPolygon(Geometry geom){
+
+        MultiPolygon mpol = (MultiPolygon) geom;
+        String wktString = "(";
+        for (int i = 0; i<mpol.size(); i++) {
+            wktString +=  writeFormatted(mpol.get(i),true);
+            if (i != mpol.size() - 1)
+                wktString += ", ";
+        }
+        wktString += ")";
+        return wktString;
+    }
+
+    private String writeGeometryCollection(Geometry geom){
+        GeometryCollection gc = (GeometryCollection) geom;
+        String wktString = "(";
+        for (int i=0; i<gc.size(); i++) {
+            wktString += writeFormatted(gc.get(i), false);
+            if (i != gc.size() - 1)
+                wktString += ", ";
+        }
+        wktString += ")";
+        return wktString;
+    }
+
+    private String decimalformat(double d){ //formatting doubles to get a proper wktString
         if (d == (long) d)
             return String.format("%d",(long)d);
         else
@@ -32,86 +110,46 @@ public class WKTWriter {
     }
 
     public String writeFormatted(Geometry geom, boolean isSubElement){
-        String output = "";
+        String wktString = "";
         Class geom_class = geom.getClass();
         if (!isSubElement){
-            output += geom_class.getSimpleName().toUpperCase(Locale.ENGLISH) + " ";
+            wktString += geom_class.getSimpleName().toUpperCase(Locale.ENGLISH) + " ";
 
         }
         if (geom.isEmpty()){
-            output += "EMPTY";
+            wktString += "EMPTY";
         }
         else if (geom_class == Point.class) {
-            Point p = (Point) geom;
-            output += "(" + decimalformat(p.getX()) + " " + decimalformat(p.getY()) + ")";
+            wktString += writePoint(geom);
         }
 
         else if (geom_class == LineString.class) {
-            LineString ls = (LineString)geom;
-            output += "(";
-            for (int i = 0; i < ls.getNumCoords(); i++) {
-                output += decimalformat(ls.getX(i)) + " " + decimalformat(ls.getY(i));
-                if (i != ls.getNumCoords() - 1)
-                    output += ", ";
-            }
-            output += ")";
+            wktString += writeLineString(geom);
         }
 
         else if (geom_class == Polygon.class)
         {
-            Polygon pol = (Polygon) geom;
-            // couldnt find clear info about expected output here. So just imitating wikipedia example.
-            output += "(" + writeFormatted(pol.getOuter(),true);
-            for (int i = 0; i < pol.getNumHoles(); i++) {
-                output += ", " + writeFormatted(pol.getHole(i), true);
-            }
-            output += ")";
+            wktString += writePolygon(geom);
         }
 
         else if (geom_class == MultiPoint.class) {
-            MultiPoint mp = (MultiPoint) geom;
-            output += "(";
-            for (int i=0; i<mp.size(); i++) {
-                output += writeFormatted(mp.get(i), true);
-                if (i != mp.size() - 1)
-                    output += ", ";
-            }
-            output += ")";
+
+            wktString += writeMultiPoint(geom);
         }
 
         else if (geom_class == MultiLineString.class){
-            MultiLineString mls = (MultiLineString)geom;
-            output += "(";
-            for (int i = 0; i<mls.size(); i++) {
-                output +=  writeFormatted(mls.get(i), true);
-                if (i != mls.size() - 1)
-                    output += ", ";
-            }
-            output += ")";
+            wktString += writeMultiLineString(geom);
         }
 
         else if (geom_class == MultiPolygon.class){
-            MultiPolygon mpol = (MultiPolygon) geom;
-            output += "(";
-            for (int i = 0; i<mpol.size(); i++) {
-                output +=  writeFormatted(mpol.get(i),true);
-                if (i != mpol.size() - 1)
-                    output += ", ";
-            }
-            output += ")";
+            wktString += writeMultiPolygon(geom);
         }
 
         else if (geom_class == GeometryCollection.class) {
-            GeometryCollection gc = (GeometryCollection) geom;
-            output += "(";
-            for (int i=0; i<gc.size(); i++) {
-                output += writeFormatted(gc.get(i), false);
-                if (i != gc.size() - 1)
-                    output += ", ";
-            }
-            output += ")";
+
+            wktString += writeGeometryCollection(geom);
         }
-        return output;
+        return wktString;
     }
 
 
