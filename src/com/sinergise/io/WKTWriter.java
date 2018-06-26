@@ -113,39 +113,39 @@ public class WKTWriter {
         String wktString = "";
         Class geom_class = geom.getClass();
         if (!isSubElement){
-            wktString += geom_class.getSimpleName().toUpperCase(Locale.ENGLISH) + " ";
+            wktString += geom.getClass().getSimpleName().toUpperCase(Locale.ENGLISH) + " "; //to get exactly "LINESTRING"
 
         }
         if (geom.isEmpty()){
             wktString += "EMPTY";
         }
-        else if (geom_class == Point.class) {
+        else if (geom instanceof Point) {
             wktString += writePoint(geom);
         }
 
-        else if (geom_class == LineString.class) {
+        else if (geom instanceof LineString) {
             wktString += writeLineString(geom);
         }
 
-        else if (geom_class == Polygon.class)
+        else if (geom instanceof Polygon)
         {
             wktString += writePolygon(geom);
         }
 
-        else if (geom_class == MultiPoint.class) {
+        else if (geom instanceof MultiPoint) {
 
             wktString += writeMultiPoint(geom);
         }
 
-        else if (geom_class == MultiLineString.class){
+        else if (geom instanceof MultiLineString){
             wktString += writeMultiLineString(geom);
         }
 
-        else if (geom_class == MultiPolygon.class){
+        else if (geom instanceof MultiPolygon){
             wktString += writeMultiPolygon(geom);
         }
 
-        else if (geom_class == GeometryCollection.class) {
+        else if (geom instanceof GeometryCollection) {
 
             wktString += writeGeometryCollection(geom);
         }
