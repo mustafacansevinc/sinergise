@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list id="0d74dea2-6451-4160-9194-046fe7aff557" name="read linestring added" comment="" />
     <list default="true" id="261ce2bb-0f61-4a7e-9f2f-2325dd94c16f" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/sinergise/io/WKTWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sinergise/io/WKTWriter.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -19,8 +18,8 @@
       <file leaf-file-name="WKTWriter.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/sinergise/io/WKTWriter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="115" column="121" selection-start-line="115" selection-start-column="121" selection-end-line="115" selection-end-column="121" />
+            <state relative-caret-position="56">
+              <caret line="18" column="30" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -262,9 +261,9 @@
       <window_info anchor="right" id="Capture Analysis" order="3" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50292826" side_tool="true" weight="0.3291536" />
       <window_info anchor="right" id="Maven Projects" order="3" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49853587" weight="0.3284553" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49853587" visible="true" weight="0.3284553" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.34146342" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49707174" visible="true" weight="0.3284553" />
+      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49707174" weight="0.3284553" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26172465" />
@@ -404,8 +403,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sinergise/io/WKTWriter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="115" column="121" selection-start-line="115" selection-start-column="121" selection-end-line="115" selection-end-column="121" />
+        <state relative-caret-position="56">
+          <caret line="18" column="30" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

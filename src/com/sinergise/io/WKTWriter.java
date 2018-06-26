@@ -17,10 +17,49 @@ public class WKTWriter {
 
     public String write(Geometry geom) {
         //TODO: Implement this
-        //TODO: Use instanceof
         //TODO: Add fashion
         //TODO: Add comments
         String wktString = writeFormatted(geom, false); //using isSubElement to get a proper wktString
+        return wktString;
+    }
+
+    public String writeFormatted(Geometry geom, boolean isSubElement){
+        String wktString = "";
+        if (!isSubElement){
+            wktString += geom.getClass().getSimpleName().toUpperCase(Locale.ENGLISH) + " "; //to get exactly "LINESTRING"
+
+        }
+        if (geom.isEmpty()){
+            wktString += "EMPTY";
+        }
+        else if (geom instanceof Point) {
+            wktString += writePoint(geom);
+        }
+
+        else if (geom instanceof LineString) {
+            wktString += writeLineString(geom);
+        }
+
+        else if (geom instanceof Polygon) {
+            wktString += writePolygon(geom);
+        }
+
+        else if (geom instanceof MultiPoint) {
+            wktString += writeMultiPoint(geom);
+        }
+
+        else if (geom instanceof MultiLineString) {
+            wktString += writeMultiLineString(geom);
+        }
+
+        else if (geom instanceof MultiPolygon) {
+            wktString += writeMultiPolygon(geom);
+        }
+
+        else if (geom instanceof GeometryCollection) {
+            wktString += writeGeometryCollection(geom);
+        }
+
         return wktString;
     }
 
@@ -29,7 +68,7 @@ public class WKTWriter {
         return "(" + decimalformat(p.getX()) + " " + decimalformat(p.getY()) + ")";
     }
 
-    private String writeLineString(Geometry geom){
+    private String writeLineString(Geometry geom) {
         LineString ls = (LineString)geom;
         String wktString = "(";
         for (int i = 0; i < ls.getNumCoords(); i++) {
@@ -64,8 +103,7 @@ public class WKTWriter {
         return wktString;
     }
 
-    private String writeMultiLineString(Geometry geom){
-
+    private String writeMultiLineString(Geometry geom) {
         MultiLineString mls = (MultiLineString)geom;
         String wktString = "(";
         for (int i = 0; i<mls.size(); i++) {
@@ -77,8 +115,7 @@ public class WKTWriter {
         return wktString;
     }
 
-    private String writeMultiPolygon(Geometry geom){
-
+    private String writeMultiPolygon(Geometry geom) {
         MultiPolygon mpol = (MultiPolygon) geom;
         String wktString = "(";
         for (int i = 0; i<mpol.size(); i++) {
@@ -90,7 +127,7 @@ public class WKTWriter {
         return wktString;
     }
 
-    private String writeGeometryCollection(Geometry geom){
+    private String writeGeometryCollection(Geometry geom) {
         GeometryCollection gc = (GeometryCollection) geom;
         String wktString = "(";
         for (int i=0; i<gc.size(); i++) {
@@ -102,56 +139,12 @@ public class WKTWriter {
         return wktString;
     }
 
-    private String decimalformat(double d){ //formatting doubles to get a proper wktString
+    private String decimalformat(double d) {    //formatting doubles to get a proper wktString
         if (d == (long) d)
             return String.format("%d",(long)d);
         else
             return String.format("%s",d);
     }
-
-    public String writeFormatted(Geometry geom, boolean isSubElement){
-        String wktString = "";
-        Class geom_class = geom.getClass();
-        if (!isSubElement){
-            wktString += geom.getClass().getSimpleName().toUpperCase(Locale.ENGLISH) + " "; //to get exactly "LINESTRING"
-
-        }
-        if (geom.isEmpty()){
-            wktString += "EMPTY";
-        }
-        else if (geom instanceof Point) {
-            wktString += writePoint(geom);
-        }
-
-        else if (geom instanceof LineString) {
-            wktString += writeLineString(geom);
-        }
-
-        else if (geom instanceof Polygon)
-        {
-            wktString += writePolygon(geom);
-        }
-
-        else if (geom instanceof MultiPoint) {
-
-            wktString += writeMultiPoint(geom);
-        }
-
-        else if (geom instanceof MultiLineString){
-            wktString += writeMultiLineString(geom);
-        }
-
-        else if (geom instanceof MultiPolygon){
-            wktString += writeMultiPolygon(geom);
-        }
-
-        else if (geom instanceof GeometryCollection) {
-
-            wktString += writeGeometryCollection(geom);
-        }
-        return wktString;
-    }
-
 
     public static void main(String[] args){
         WKTWriter wkt = new WKTWriter();
