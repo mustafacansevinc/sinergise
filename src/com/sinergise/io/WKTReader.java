@@ -187,28 +187,4 @@ public class WKTReader {
         System.out.println(new WKTWriter().write(gcol));
         return gcol;
     }
-
-    public static void main(String[] args){
-        //Writing with WKTWriter in reader methods to check objects.
-        WKTReader wkt = new WKTReader();
-        wkt.read("MULTILINESTRING ((30 10, 10 30, 40 40), LINESTRING EMPTY, (30 10, 10 30, 40 40))");
-        wkt.read("MULTIPOINT ((3 5), POINT EMPTY, (4 6))");
-        wkt.read("MULTIPOLYGON EMPTY");
-        wkt.read("MULTILINESTRING EMPTY");
-        wkt.read("MULTILINESTRING (LINESTRING EMPTY)");
-        wkt.read("MULTIPOINT EMPTY");
-        wkt.read("MULTIPOINT (POINT EMPTY)");
-        wkt.read("MULTIPOLYGON (POLYGON EMPTY, ((35 10, 45 45, 15 40, 10 20, 35 10), (20 30, 35 35, 30 20, 20 30)))");
-        wkt.read("POINT (3.5 4)");
-        wkt.read("LINESTRING EMPTY");
-        wkt.read("LINESTRING (30 10, 10 30, 40 40)");
-        wkt.read("LINESTRING (30.4 10, 10 30.2, 40.5 40)");
-        wkt.read("POLYGON ((35 10, 45 45, 15 40, 10 20, 35 10), (20 30, 35 35, 30 20, 20 30))");
-        wkt.read("POLYGON EMPTY");
-        wkt.read("MULTIPOINT ((4 6), (5 10))");
-        wkt.read("MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)), ((20 35, 10 30, 10 10, 30 5, 45 20, 20 35), (30 20, 20 15, 20 25, 30 20)))");
-        wkt.read("GEOMETRYCOLLECTION EMPTY");
-        wkt.read("GEOMETRYCOLLECTION (POINT (4 6), LINESTRING (4 6, 7 10), POINT EMPTY)");
-    }
 }
-
