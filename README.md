@@ -1,4 +1,7 @@
 # sinergise
+A project given at an interview. The text is below.
+
+
 Problem:
 ============================
 
